@@ -20,3 +20,4 @@ class AllAccess(permissions.BasePermission):
             return bool(request.user and request.user.id)
         
         return True
+
