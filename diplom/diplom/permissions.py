@@ -13,3 +13,11 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             return bool(request.user and request.user.id)
         
         return obj == request.user or bool(request.user and request.user.is_superuser)
+    
+class AllAccess(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.method == 'GET':
+            return bool(request.user and request.user.id)
+        
+        return True
+

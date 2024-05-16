@@ -1,7 +1,6 @@
-from django.shortcuts import render
 from rest_framework import generics
 
-from diplom.permissions import IsOwnerOrReadOnly
+from diplom.permissions import IsOwnerOrReadOnly, AllAccess
 from .models import User
 from .serializers import UserSerializer, UserSerializerRegister
 from .filters import UserFilter
@@ -18,6 +17,8 @@ class UserAPIList(generics.ListAPIView):
 class UserAPICreate(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializerRegister
+    permission_classes = [AllAccess]
+
 
 class UserAPIUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
