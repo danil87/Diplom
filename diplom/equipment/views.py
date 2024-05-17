@@ -30,23 +30,6 @@ class EquipmentAssignmentAPIList(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend]
     filterset_class = EquipmentAssignmentFilter
 
-    # def get_queryset(self):
-    #     queryset = EquipmentAssignments.objects.all()
-        
-        # if 'equipment' in self.request.query_params:
-        #     queryset = queryset.filter(equipment__in=self.request.query_params.get('equipment'))
-
-        # if 'user' in self.request.query_params:
-        #     queryset = queryset.filter(equipment__in=self.request.query_params.get('user'))
-
-        # if 'assignment_date' in self.request.query_params:
-        #     queryset = queryset.filter(equipment__in=self.request.query_params.get('assignment_date'))
-
-        # if 'return_date' in self.request.query_params:
-        #     queryset = queryset.filter(equipment__in=self.request.query_params.get('return_date'))
-
-        # return queryset
-
 class EquipmentAssignmentAPICreate(generics.ListCreateAPIView):
     queryset = EquipmentAssignments.objects.all()
     serializer_class = EquipmentAssignmentsCreateOrUpdateSerializer

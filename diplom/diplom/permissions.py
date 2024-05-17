@@ -16,8 +16,8 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
     
 class AllAccess(permissions.BasePermission):
     def has_permission(self, request, view):
-        if request.method == 'GET':
-            return bool(request.user and request.user.id)
+        if request.method == 'POST':
+            return True
         
-        return True
+        return False
 
