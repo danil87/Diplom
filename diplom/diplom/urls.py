@@ -16,11 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from user.views import RefreshTokenView, UserAPILogin, UserAPILogout
+from user.views import *
+from rest_framework_simplejwt.views import TokenObtainPairView
+import debug_toolbar
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/auth/login', UserAPILogin.as_view()),
+    path('api/v1/auth/create', UserAPICreate.as_view()),
     path('api/v1/auth/logout', UserAPILogout.as_view()),
     path('api/v1/equipments/', include('equipment.urls')),
     path('api/v1/manufacturers/', include('manufacturer.urls')),
@@ -28,4 +32,10 @@ urlpatterns = [
     path('api/v1/maintenances/', include('maintenance.urls')),
     path('api/v1/reports/', include('report.urls')),
     path('api/v1/token/refresh/', RefreshTokenView.as_view(), name='token_refresh'),
+    
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        path("__debug__/", include(debug_toolbar.urls)),
+    ]

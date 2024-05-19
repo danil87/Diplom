@@ -46,11 +46,7 @@ class UserAPICreate(generics.ListCreateAPIView):
 
         headers = self.get_success_headers(serializer.data)
 
-        response = Response({
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-            'user': UserSerializer(user).data
-        }, status=status.HTTP_201_CREATED, headers=headers)
+        response = Response(status=status.HTTP_201_CREATED, headers=headers)
 
         response.set_cookie('refresh', str(refresh))
 
@@ -86,9 +82,7 @@ class UserAPILogin(generics.CreateAPIView):
         refresh = get_refresh(user)
 
         response = Response({
-            'access': str(refresh.access_token),
-            'user': UserSerializer(user).data
-
+            'access': str(refresh.access_token)
         }, status=status.HTTP_200_OK)
 
         response.set_cookie('refresh', str(refresh))
@@ -117,7 +111,17 @@ class UserAPILogout(generics.CreateAPIView):
 
         return Response({'success': 'Выход успешен'}, 
                         status=status.HTTP_200_OK)
-        
+
+class UserAPIUserData(generics.RetrieveAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = None
+
+    def retrieve(self, request, *args, **kwargs):
+        serializer = self.get_serializer(request.user)
+        return Response(serializer.data)
+    
+
 class RefreshTokenView(TokenRefreshView):
     
     def post(self, request: Request, *args, **kwargs) -> Response:
