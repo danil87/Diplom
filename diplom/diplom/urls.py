@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+import debug_toolbar.panels
+import debug_toolbar.locale
 from user.views import *
 from rest_framework_simplejwt.views import TokenObtainPairView
 import debug_toolbar
@@ -35,7 +37,7 @@ urlpatterns = [
     
 ]
 
-if settings.DEBUG:
-    urlpatterns += [
-        path("__debug__/", include(debug_toolbar.urls)),
-    ]
+# if settings.DEBUG:
+#     urlpatterns += [
+#         path("__debug__/", include(debug_toolbar.urls)),
+#     ]
