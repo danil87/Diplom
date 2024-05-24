@@ -1,4 +1,6 @@
+import { drawerListResources } from 'components/drawer-list'
 import { langResources } from 'components/select-language'
+import { userTableResources } from 'components/user-table'
 import { authResources } from 'pages/auth'
 import { validateResources } from 'utils/scheme'
 
@@ -25,4 +27,6 @@ export const resources = combineResources([
   validateResources,
   authResources,
   langResources,
+  drawerListResources,
+  userTableResources,
 ])

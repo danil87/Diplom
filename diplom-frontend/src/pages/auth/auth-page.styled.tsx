@@ -1,14 +1,26 @@
-import { Box, styled } from '@mui/material'
+import { Box, Container, styled } from '@mui/material'
 
-export const Header = styled(Box)({
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  right: 0,
-  display: 'flex',
-  justifyContent: 'flex-end',
-  padding: '10px 30px',
-  borderBottom: '1px solid #e5e5e5e5',
-  zIndex: 1,
-  backgroundColor: '#fff',
-})
+export const Wrapper = styled(Box)`
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 32px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+`
+
+export const FromContainer = styled(Container)`
+  position: relative;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 50px;
+  border: 1px solid #e5e5e5e5;
+  border-radius: 8px;
+`

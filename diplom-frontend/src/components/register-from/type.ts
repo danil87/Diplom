@@ -1,9 +1,5 @@
-import { LoginData } from 'components/login-from'
+import { User } from 'type'
 
 export type RegisterData = {
-  firstName: string
-  lastName: string
-  role: string
-  email: string
-  isSuperUser: boolean
-} & LoginData
+  password: string
+} & Omit<User, 'id'>

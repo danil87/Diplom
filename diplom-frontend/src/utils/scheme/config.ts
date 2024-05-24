@@ -18,9 +18,9 @@ export const loginScheme = object({
 export const registerScheme = object({
   password: passwordScheme,
   username: usernameScheme,
-  firstName: usernameScheme,
-  lastName: usernameScheme,
+  first_name: usernameScheme,
+  last_name: usernameScheme,
   role: roleScheme,
-  isSuperUser: isSuperUserScheme,
+  is_superuser: isSuperUserScheme,
   email: emailScheme,
 })
