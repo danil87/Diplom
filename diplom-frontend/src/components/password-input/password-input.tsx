@@ -15,10 +15,11 @@ import { useTranslation } from 'react-i18next'
 type Props = {
   error?: boolean
   helperText?: string
+  dataTestid: string
 } & ReturnType<UseFormRegister<LoginData>>
 
 export const PasswordInput = forwardRef<HTMLInputElement, Props>(
-  ({ error, helperText, ...register }, parentRef) => {
+  ({ error, helperText, dataTestid, ...register }, parentRef) => {
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const { t } = useTranslation()
 
@@ -30,6 +31,9 @@ export const PasswordInput = forwardRef<HTMLInputElement, Props>(
         <OutlinedInput
           inputRef={parentRef}
           type={showPassword ? 'text' : 'password'}
+          inputProps={{
+            'data-testid': dataTestid,
+          }}
           endAdornment={
             <InputAdornment position='end'>
               <IconButton

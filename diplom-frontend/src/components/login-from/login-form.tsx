@@ -61,6 +61,7 @@ export const LoginForm: FC = () => {
           onSubmit={handleSubmit(signIn)}
           noValidate
           sx={{ mt: 1 }}
+          data-testid='form-login'
         >
           <TextField
             {...register('username')}
@@ -69,11 +70,15 @@ export const LoginForm: FC = () => {
             margin='normal'
             fullWidth
             label={t('auth.username')}
+            inputProps={{
+              'data-testid': 'username-input',
+            }}
           />
           <PasswordInput
             {...register('password')}
             error={!!errors.password?.message}
             helperText={errors.password?.message && t(errors.password?.message)}
+            dataTestid='password-input'
           />
 
           <LoadingButton
@@ -83,6 +88,7 @@ export const LoginForm: FC = () => {
             fullWidth
             variant='contained'
             sx={{ mt: 3, mb: 2 }}
+            data-testid='login-button'
           >
             {t('auth.signIn')}
           </LoadingButton>
