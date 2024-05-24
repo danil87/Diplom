@@ -7,10 +7,10 @@ import { PasswordInput } from 'components/password-input'
 import { FC, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { loginScheme } from 'utils/scheme'
 
-import { CustomAlert, Wrapper } from './login-form.styled'
+import { CustomAlert } from './login-form.styled'
 import { LoginData } from './type'
 
 export const LoginForm: FC = () => {
@@ -25,14 +25,13 @@ export const LoginForm: FC = () => {
     mode: 'all',
     resolver: yupResolver(loginScheme),
   })
-  const navigate = useNavigate()
   const { t } = useTranslation()
   const [signIn, { isLoading, isSuccess, isError, error }] =
     authApi.useSignInMutation()
 
   useEffect(() => {
     if (isSuccess) {
-      navigate('/')
+      window.location.reload()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess])
@@ -50,7 +49,7 @@ export const LoginForm: FC = () => {
           {error ? errMes : state && t('auth.registerSuccess')}
         </CustomAlert>
       )}
-      <Wrapper>
+      <>
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
@@ -93,7 +92,7 @@ export const LoginForm: FC = () => {
             </Grid>
           </Grid>
         </Box>
-      </Wrapper>
+      </>
     </>
   )
 }

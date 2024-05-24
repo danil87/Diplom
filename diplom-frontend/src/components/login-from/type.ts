@@ -1,4 +1,5 @@
+import { User } from 'type'
+
 export type LoginData = {
-  username: string
   password: string
-}
+} & Pick<User, 'username'>

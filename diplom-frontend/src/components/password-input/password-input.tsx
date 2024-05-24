@@ -35,7 +35,6 @@ export const PasswordInput = forwardRef<HTMLInputElement, Props>(
               <IconButton
                 aria-label='toggle password visibility'
                 onClick={() => setShowPassword(show => !show)}
-                onMouseDown={e => e.preventDefault()}
                 edge='end'
               >
                 {showPassword ? <VisibilityOff /> : <Visibility />}

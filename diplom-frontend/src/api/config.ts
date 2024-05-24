@@ -12,7 +12,12 @@ export const getBaseQuery = (baseUrl: string) => {
     credentials: 'include',
     mode: 'cors',
     prepareHeaders: headers => {
-      headers.set('authorization', `Bearer ${localStorage.getItem('access')}`)
+      const accessToken = localStorage.getItem('access')
+
+      if (accessToken) {
+        headers.set('authorization', `Bearer ${accessToken}`)
+      }
+
       return headers
     },
   })
@@ -56,11 +61,7 @@ export const baseQueryFnForAuth: BaseQueryFn<
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
-  const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://localhost:8000/api/v1/auth',
-    mode: 'cors',
-    credentials: 'include',
-  })
+  const baseQuery = getBaseQuery('http://localhost:8000/api/v1/auth')
 
   const result = await baseQuery(args, api, extraOptions)
 

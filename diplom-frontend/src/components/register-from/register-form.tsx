@@ -3,6 +3,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { Avatar, Box, Grid, TextField, Typography } from '@mui/material'
 import { authApi } from 'api'
+import { userApi } from 'api/user-api'
+import { StyledCheckBox } from 'components/check-box'
 import { PasswordInput } from 'components/password-input'
 import { FC, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -10,30 +12,35 @@ import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { registerScheme } from 'utils/scheme'
 
-import { CustomAlert, Wrapper } from './register-form.styled'
+import { inputsData } from './lib/inputs-data'
+import { CustomAlert } from './register-form.styled'
 import { RegisterData } from './type'
 
 export const RegisterForm: FC = () => {
   const [errMes, setErrMes] = useState<string>('')
+  const navigate = useNavigate()
+  const { t } = useTranslation()
+  const { data: user } = userApi.useGetUserQuery(undefined, {
+    skip: !localStorage.getItem('access'),
+  })
+  const [reg, { isLoading, isSuccess, isError, error }] =
+    authApi.useRegisterMutation()
+
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<RegisterData>({
     mode: 'all',
     defaultValues: {
-      isSuperUser: false,
+      is_superuser: false,
     },
     resolver: yupResolver(registerScheme),
   })
-  const navigate = useNavigate()
-  const { t } = useTranslation()
-
-  const [reg, { isLoading, isSuccess, isError, error }] =
-    authApi.useRegisterMutation()
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && !user) {
       navigate('/sign-in', { state: {} })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -50,7 +57,7 @@ export const RegisterForm: FC = () => {
       {isError && errMes && (
         <CustomAlert severity='error'>{errMes}</CustomAlert>
       )}
-      <Wrapper>
+      <>
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
@@ -63,53 +70,41 @@ export const RegisterForm: FC = () => {
           noValidate
           sx={{ mt: 1 }}
         >
-          <TextField
-            {...register('firstName')}
-            error={!!errors.firstName?.message}
-            helperText={
-              errors.firstName?.message && t(errors.firstName?.message)
+          {inputsData.map(({ name }) => {
+            if (name === 'password') {
+              return (
+                <PasswordInput
+                  {...register('password')}
+                  key={name}
+                  error={!!errors.password?.message}
+                  helperText={
+                    errors.password?.message && t(errors.password?.message)
+                  }
+                />
+              )
             }
-            margin='normal'
-            fullWidth
-            label={t('auth.firstName')}
-          />
-          <TextField
-            {...register('lastName')}
-            error={!!errors.lastName?.message}
-            helperText={errors.lastName?.message && t(errors.lastName?.message)}
-            margin='normal'
-            fullWidth
-            label={t('auth.lastName')}
-          />
-          <TextField
-            {...register('email')}
-            error={!!errors.email?.message}
-            helperText={errors.email?.message && t(errors.email?.message)}
-            margin='normal'
-            fullWidth
-            label={t('auth.email')}
-          />
-          <TextField
-            {...register('username')}
-            error={!!errors.username?.message}
-            helperText={errors.username?.message && t(errors.username?.message)}
-            margin='normal'
-            fullWidth
-            label={t('auth.username')}
-          />
-          <PasswordInput
-            {...register('password')}
-            error={!!errors.password?.message}
-            helperText={errors.password?.message && t(errors.password?.message)}
-          />
-          <TextField
-            {...register('role')}
-            error={!!errors.role?.message}
-            helperText={errors.role?.message && t(errors.role?.message)}
-            margin='normal'
-            fullWidth
-            label={t('auth.role')}
-          />
+            if (name === 'is_superuser') {
+              return (
+                user?.is_superuser && (
+                  <StyledCheckBox key={name} control={control} />
+                )
+              )
+            }
+
+            return (
+              <TextField
+                {...register(name)}
+                key={name}
+                error={!!errors[name]?.message}
+                helperText={
+                  errors[name]?.message && t(`${errors[name]?.message}`)
+                }
+                margin='normal'
+                fullWidth
+                label={t(`auth.${name}`)}
+              />
+            )
+          })}
           <LoadingButton
             loading={isLoading}
             disabled={!isValid}
@@ -120,13 +115,15 @@ export const RegisterForm: FC = () => {
           >
             {t('auth.reg')}
           </LoadingButton>
-          <Grid container>
-            <Grid item>
-              <Link to='/sign-in'>{t('auth.haveAccount')}</Link>
+          {!user?.is_superuser && (
+            <Grid container>
+              <Grid item>
+                <Link to='/sign-in'>{t('auth.haveAccount')}</Link>
+              </Grid>
             </Grid>
-          </Grid>
+          )}
         </Box>
-      </Wrapper>
+      </>
     </>
   )
 }
