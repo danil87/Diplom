@@ -33,10 +33,14 @@ export const Header: FC = () => {
         <StyledBox>
           {isSuccess && (
             <>
-              <Button variant='text' sx={style}>
+              <Button data-testid='username-button' variant='text' sx={style}>
                 {user.username}
               </Button>
-              <Button sx={style} onClick={() => signOut()}>
+              <Button
+                data-testid='sign-out-button'
+                sx={style}
+                onClick={() => signOut()}
+              >
                 {t('auth.signOut')}
               </Button>
             </>
