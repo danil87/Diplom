@@ -6,7 +6,7 @@ import { AccessToken } from 'type'
 import { baseQueryFnForAuth } from './config'
 
 export const authApi = createApi({
-  reducerPath: 'loginApi',
+  reducerPath: 'authApi',
   baseQuery: baseQueryFnForAuth,
   endpoints: builder => ({
     signIn: builder.mutation<AccessToken, LoginData>({

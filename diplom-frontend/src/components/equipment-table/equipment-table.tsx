@@ -1,34 +1,50 @@
 import { CircularProgress } from '@mui/material'
-import { userApi } from 'api'
+import { equipmentApi } from 'api'
 import { Filters } from 'components/filter'
 import { ModalWindow } from 'components/modal'
 import { RegisterForm } from 'components/register-from'
 import { CustomTable } from 'components/table'
 import { useQuery, useUserData } from 'hooks'
-import { FC, useCallback } from 'react'
+import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import { User } from 'type'
+import { Equipment } from 'type'
 
-import { StyledButton, Wrapper } from './user-table.styled'
+import { StyledButton, Wrapper } from './equipment-table.styled'
 
 const LIMIT = 5
 
 const filterData = [
   {
-    label: 'userTable.username',
-    key: 'username',
+    label: 'equipmentList.serial_number',
+    key: 'serial_number',
   },
   {
-    label: 'userTable.email',
-    key: 'email',
+    label: 'equipmentList.manufacturer',
+    key: 'manufacturer',
   },
   {
-    label: 'userTable.role',
-    key: 'role',
+    label: 'equipmentList.location',
+    key: 'location',
+  },
+  {
+    label: 'equipmentList.type',
+    key: 'serial_number',
+  },
+  {
+    label: 'equipmentList.date_purchased',
+    key: 'manufacturer',
+  },
+  {
+    label: 'equipmentList.status',
+    key: 'location',
+  },
+  {
+    label: 'equipmentList.warranty_expiration',
+    key: 'location',
   },
 ]
 
-export const UserTable: FC = () => {
+export const EquipmentTable: FC = () => {
   const { t } = useTranslation()
   const { data: user } = useUserData()
   const {
@@ -37,37 +53,31 @@ export const UserTable: FC = () => {
     isOpenModal,
     setIsOpenModal,
     maxPage,
-    data: users,
+    data: equipments,
     isVisibilityKey,
     isFetching,
-  } = useQuery<User>(LIMIT, userApi.useGetUsersQuery)
+  } = useQuery<Equipment>(LIMIT, equipmentApi.useGetEquipmentsQuery)
 
-  const [deleteUser] = userApi.useDeleteUserMutation()
-
-  const isVisibilityKeyUser = useCallback(
-    (key: string) => isVisibilityKey(key) && key !== 'is_superuser',
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  )
+  const [deleteEq] = equipmentApi.useDeleteEquipmentMutation()
 
   return (
     <Wrapper>
       {user?.is_superuser && (
         <StyledButton onClick={() => setIsOpenModal(true)} variant='contained'>
-          {t('userTable.addEmployees')}
+          {t('equipmentList.addEquipment')}
         </StyledButton>
       )}
       <Filters filterData={filterData} />
       {isFetching && <CircularProgress />}
-      {!isFetching && !!users?.length && (
+      {!isFetching && !!equipments?.length && (
         <CustomTable
-          data={users}
-          isVisibilityKey={isVisibilityKeyUser}
-          translateBase='userTable'
+          data={equipments}
+          isVisibilityKey={isVisibilityKey}
+          translateBase='equipmentList'
           page={page}
           setPage={setPage}
           maxPage={maxPage}
-          deleteObj={deleteUser}
+          deleteObj={deleteEq}
         />
       )}
       <ModalWindow open={isOpenModal} onClose={() => setIsOpenModal(false)}>

@@ -1,4 +1,5 @@
 import { drawerListResources } from 'components/drawer-list'
+import { equipmentResources } from 'components/equipment-table/i18n'
 import { langResources } from 'components/select-language'
 import { userTableResources } from 'components/user-table'
 import { authResources } from 'pages/auth'
@@ -29,4 +30,5 @@ export const resources = combineResources([
   langResources,
   drawerListResources,
   userTableResources,
+  equipmentResources,
 ])

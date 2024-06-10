@@ -3,6 +3,10 @@ export const drawerListResources = {
     translation: {
       drawerList: {
         employees: 'Рабочие',
+        equipment: 'Оборудование',
+        report: 'Отчёт',
+        assignmentEquipment: 'Назначенное оборудование',
+        maintenance: 'Ремонт',
       },
     },
   },
@@ -10,6 +14,10 @@ export const drawerListResources = {
     translation: {
       drawerList: {
         employees: 'Employees',
+        equipment: 'Equipment',
+        report: 'Report',
+        assignmentEquipment: 'Assignment equipment',
+        maintenance: 'Maintenance',
       },
     },
   },
