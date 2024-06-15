@@ -5,7 +5,6 @@ from .serializers import *
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import EquipmentAssignmentFilter, EquipmentFilter
 
-# Create your views here.
 class EquipmentAPIList(generics.ListAPIView):
     serializer_class = EquipmentListSerializer
     queryset = Equipment.objects.all()
@@ -18,12 +17,7 @@ class EquipmentAPICreate(generics.ListCreateAPIView):
 
 class EquipmentAPIUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Equipment.objects.all()
-
-    def get_serializer_class(self):
-        if self.request.method == 'GET':
-            return EquipmentListSerializer
-        
-        return EquipmentCreateOrUpdateSerializer
+    serializer_class = EquipmentCreateOrUpdateSerializer
 
 class EquipmentAssignmentAPIList(generics.ListAPIView):
     serializer_class = EquipmentAssignmentsListSerializer

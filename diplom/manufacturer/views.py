@@ -21,4 +21,4 @@ class ManufacturerAPICreate(generics.ListCreateAPIView):
 
 class ManufacturerAPIUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Manufacturer.objects.all()
-    serializer_class = [ManufacturerSerializer]
+    serializer_class = ManufacturerSerializer

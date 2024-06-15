@@ -4,4 +4,4 @@ from .models import Manufacturer
 class ManufacturerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Manufacturer
-        fields = ['name', 'country']
+        fields = '__all__'
