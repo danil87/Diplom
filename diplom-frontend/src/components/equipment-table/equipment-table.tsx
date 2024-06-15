@@ -1,13 +1,13 @@
 import { CircularProgress } from '@mui/material'
 import { equipmentApi } from 'api'
+import { EquipmentForm } from 'components/equipment-form'
 import { Filters } from 'components/filter'
 import { ModalWindow } from 'components/modal'
-import { RegisterForm } from 'components/register-from'
 import { CustomTable } from 'components/table'
-import { useQuery, useUserData } from 'hooks'
-import { FC } from 'react'
+import { useQuery, useUpdateOrCreate, useUserData } from 'hooks'
+import { FC, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Equipment } from 'type'
+import { Equipment, RegEquipment } from 'type'
 
 import { StyledButton, Wrapper } from './equipment-table.styled'
 
@@ -28,19 +28,19 @@ const filterData = [
   },
   {
     label: 'equipmentList.type',
-    key: 'serial_number',
+    key: 'type',
   },
   {
     label: 'equipmentList.date_purchased',
-    key: 'manufacturer',
+    key: 'date_purchased',
   },
   {
     label: 'equipmentList.status',
-    key: 'location',
+    key: 'status',
   },
   {
     label: 'equipmentList.warranty_expiration',
-    key: 'location',
+    key: 'warranty_expiration',
   },
 ]
 
@@ -57,8 +57,29 @@ export const EquipmentTable: FC = () => {
     isVisibilityKey,
     isFetching,
   } = useQuery<Equipment>(LIMIT, equipmentApi.useGetEquipmentsQuery)
-
   const [deleteEq] = equipmentApi.useDeleteEquipmentMutation()
+
+  const props = useUpdateOrCreate<RegEquipment>(
+    equipmentApi.useCreateEquipmentMutation,
+    equipmentApi.useChangeEquipmentMutation
+  )
+
+  const [getEq, { data: equipment, reset }] =
+    equipmentApi.useGetOneEquipmentMutation()
+
+  useEffect(() => {
+    if (equipment) {
+      setIsOpenModal(true)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [equipment])
+
+  useEffect(() => {
+    if (!isOpenModal && equipment) {
+      reset()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpenModal])
 
   return (
     <Wrapper>
@@ -78,10 +99,15 @@ export const EquipmentTable: FC = () => {
           setPage={setPage}
           maxPage={maxPage}
           deleteObj={deleteEq}
+          setId={getEq}
         />
       )}
-      <ModalWindow open={isOpenModal} onClose={() => setIsOpenModal(false)}>
-        <RegisterForm />
+      <ModalWindow
+        open={isOpenModal}
+        onClose={() => setIsOpenModal(false)}
+        {...props}
+      >
+        <EquipmentForm {...props} equipment={equipment} />
       </ModalWindow>
     </Wrapper>
   )

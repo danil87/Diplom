@@ -1,5 +1,6 @@
 import { User } from 'type'
 
-export type RegisterData = {
+export type RegisterData = Omit<User, 'id'> & {
+  id?: number
   password: string
-} & Omit<User, 'id'>
+}

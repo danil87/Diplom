@@ -6,6 +6,18 @@
   background-color: rgba(245, 245, 245);
 }
 
+::-webkit-scrollbar {
+  width: 10px;               /* ширина scrollbar */
+}
+::-webkit-scrollbar-track {
+  border-radius: 8px;        /* цвет дорожки */
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0, 0.5);    /* цвет плашки */
+  border-radius: 8px;       /* закругления плашки */
+  border: 1px solid #fff
+}
+
 button:focus { outline: none !important;;}
 
 .logo {

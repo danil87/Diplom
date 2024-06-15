@@ -16,15 +16,23 @@ import { inputsData } from './lib/inputs-data'
 import { CustomAlert } from './register-form.styled'
 import { RegisterData } from './type'
 
-export const RegisterForm: FC = () => {
+type Props = {
+  // createUser: (user: RegisterData) => void
+  updateUser: (user: RegisterData) => void
+  userData?: RegisterData
+}
+
+export const RegisterForm: FC<Props> = ({ updateUser, userData }) => {
   const [errMes, setErrMes] = useState<string>('')
   const navigate = useNavigate()
   const { t } = useTranslation()
+
   const { data: user } = userApi.useGetUserQuery(undefined, {
     skip: !localStorage.getItem('access'),
   })
+
   const [reg, { isLoading, isSuccess, isError, error }] =
-    authApi.useRegisterMutation()
+    authApi.useRegisterMutation({ fixedCacheKey: 'register-user' })
 
   const {
     control,
@@ -33,11 +41,19 @@ export const RegisterForm: FC = () => {
     formState: { errors, isValid },
   } = useForm<RegisterData>({
     mode: 'all',
-    defaultValues: {
+    defaultValues: userData || {
       is_superuser: false,
     },
     resolver: yupResolver(registerScheme),
   })
+
+  const onSubmit = (data: RegisterData) => {
+    if (userData) {
+      updateUser(data)
+    } else {
+      reg(data)
+    }
+  }
 
   useEffect(() => {
     if (isSuccess && !user) {
@@ -66,7 +82,7 @@ export const RegisterForm: FC = () => {
         </Typography>
         <Box
           component='form'
-          onSubmit={handleSubmit(reg)}
+          onSubmit={handleSubmit(onSubmit)}
           noValidate
           sx={{ mt: 1 }}
         >
@@ -80,6 +96,7 @@ export const RegisterForm: FC = () => {
                   helperText={
                     errors.password?.message && t(errors.password?.message)
                   }
+                  dataTestid='input-password-register'
                 />
               )
             }

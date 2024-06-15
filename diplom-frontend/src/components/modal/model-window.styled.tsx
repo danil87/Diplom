@@ -1,4 +1,4 @@
-import { Box, IconButton, Modal, styled } from '@mui/material'
+import { Alert, Box, IconButton, Modal, styled } from '@mui/material'
 
 export const StyledModal = styled(Modal)`
   display: flex;
@@ -15,10 +15,20 @@ export const Wrapper = styled(Box)`
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-height: 94%;
+  overflow-y: scroll;
+  min-width: 30%;
 `
 
 export const CustomIconButton = styled(IconButton)`
   position: absolute;
   top: 10px;
   right: 10px;
+`
+
+export const StyledAlert = styled(Alert)`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 100;
 `

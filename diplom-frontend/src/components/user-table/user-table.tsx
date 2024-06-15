@@ -1,11 +1,11 @@
 import { CircularProgress } from '@mui/material'
-import { userApi } from 'api'
+import { authApi, userApi } from 'api'
 import { Filters } from 'components/filter'
 import { ModalWindow } from 'components/modal'
 import { RegisterForm } from 'components/register-from'
 import { CustomTable } from 'components/table'
 import { useQuery, useUserData } from 'hooks'
-import { FC, useCallback } from 'react'
+import { FC, useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { User } from 'type'
 
@@ -42,13 +42,41 @@ export const UserTable: FC = () => {
     isFetching,
   } = useQuery<User>(LIMIT, userApi.useGetUsersQuery)
 
+  const [
+    ,
+    { isSuccess: isSuccessCreate, isError: isErrorCreate, error: errorCreate },
+  ] = authApi.useRegisterMutation({
+    fixedCacheKey: 'register-user',
+  })
+
+  const [
+    updateFn,
+    { isSuccess: isSuccessUpdate, isError: isErrorUpdate, error: errorUpdate },
+  ] = userApi.useUpdateUserMutation()
+
   const [deleteUser] = userApi.useDeleteUserMutation()
+
+  const [getUser, { data: userData, reset }] = userApi.useGetOneUserMutation()
 
   const isVisibilityKeyUser = useCallback(
     (key: string) => isVisibilityKey(key) && key !== 'is_superuser',
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
+
+  useEffect(() => {
+    if (userData) {
+      setIsOpenModal(true)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userData])
+
+  useEffect(() => {
+    if (!isOpenModal && userData) {
+      reset()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpenModal])
 
   return (
     <Wrapper>
@@ -68,10 +96,17 @@ export const UserTable: FC = () => {
           setPage={setPage}
           maxPage={maxPage}
           deleteObj={deleteUser}
+          setId={getUser}
         />
       )}
-      <ModalWindow open={isOpenModal} onClose={() => setIsOpenModal(false)}>
-        <RegisterForm />
+      <ModalWindow
+        open={isOpenModal}
+        onClose={() => setIsOpenModal(false)}
+        isSuccess={isSuccessCreate || isSuccessUpdate}
+        isError={isErrorCreate || isErrorUpdate}
+        error={errorCreate || errorUpdate}
+      >
+        <RegisterForm updateUser={updateFn} userData={userData} />
       </ModalWindow>
     </Wrapper>
   )

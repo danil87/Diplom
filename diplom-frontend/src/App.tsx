@@ -4,6 +4,7 @@ import { CircularProgress } from '@mui/material'
 import { StyledBox } from 'App.styled'
 import { EquipmentTable } from 'components/equipment-table'
 import { LoginForm } from 'components/login-from'
+import { ManufacturerTable } from 'components/manufacturer-table/manufacturer-table'
 import { RegisterForm } from 'components/register-from'
 import { UserTable } from 'components/user-table'
 import { useUserData } from 'hooks/user'
@@ -25,7 +26,8 @@ export const App = () => {
         {isSuccess && (
           <Route path='/' element={<MainPage />}>
             <Route path='employees' element={<UserTable />} />
-            <Route path='/equipment' element={<EquipmentTable />} />
+            <Route path='equipment' element={<EquipmentTable />} />
+            <Route path='manufacturer' element={<ManufacturerTable />} />
           </Route>
         )}
         {!isAccessToken && (

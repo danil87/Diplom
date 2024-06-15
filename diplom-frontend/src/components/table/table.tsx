@@ -13,6 +13,8 @@ import {
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { StyledTableRow } from './table.styled'
+
 type Props<T> = {
   isVisibilityKey: (key: string) => boolean
   data: T[]
@@ -22,9 +24,10 @@ type Props<T> = {
   maxPage: number
   deleteObj: (id: number) => void
   isDelete?: boolean
+  setId: (id: number) => void
 }
 
-export const CustomTable = <T extends { id: number } & object>({
+export const CustomTable = <T extends { id?: number } & object>({
   isVisibilityKey,
   data,
   translateBase,
@@ -33,6 +36,7 @@ export const CustomTable = <T extends { id: number } & object>({
   maxPage,
   deleteObj,
   isDelete = true,
+  setId,
 }: Props<T>) => {
   const { t } = useTranslation()
   const dataKeys = useMemo(() => Object.keys(data[0]), [data])
@@ -55,8 +59,9 @@ export const CustomTable = <T extends { id: number } & object>({
           </TableHead>
           <TableBody>
             {data.map(el => (
-              <TableRow
+              <StyledTableRow
                 key={el.id}
+                onClick={() => setId(el.id!)}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 {dataKeys.map(
@@ -70,14 +75,14 @@ export const CustomTable = <T extends { id: number } & object>({
                 {isDelete && (
                   <TableCell>
                     <IconButton
-                      onClick={() => deleteObj(el.id)}
+                      onClick={() => deleteObj(el.id!)}
                       aria-label='delete'
                     >
                       <DeleteIcon />
                     </IconButton>
                   </TableCell>
                 )}
-              </TableRow>
+              </StyledTableRow>
             ))}
           </TableBody>
         </Table>

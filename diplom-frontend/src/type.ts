@@ -27,7 +27,18 @@ export type Equipment = {
   serial_number: string
   location: string
   status: string
-  data_purchased: Date
+  date_purchased: Date
   warranty_expiration: Date
   manufacturer: string
+}
+
+export type RegEquipment = Omit<Equipment, 'id' | 'manufacturer'> & {
+  id?: number
+  manufacturer: number
+}
+
+export type Manufacturer = {
+  id?: number
+  name: string
+  country: string
 }

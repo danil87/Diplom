@@ -41,6 +41,7 @@ export const getBaseQuery = (baseUrl: string) => {
 
       if (accessTokenData.error) {
         localStorage.removeItem('access')
+        window.location.reload()
         return result
       }
 

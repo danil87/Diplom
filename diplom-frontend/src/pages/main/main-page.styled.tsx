@@ -10,5 +10,5 @@ export const Content = styled(Box)`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 50px 0;
+  padding: 50px 20px;
 `

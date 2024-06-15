@@ -1,5 +1,6 @@
 import { drawerListResources } from 'components/drawer-list'
 import { equipmentResources } from 'components/equipment-table/i18n'
+import { manufacturerResources } from 'components/manufacturer-table'
 import { langResources } from 'components/select-language'
 import { userTableResources } from 'components/user-table'
 import { authResources } from 'pages/auth'
@@ -31,4 +32,5 @@ export const resources = combineResources([
   drawerListResources,
   userTableResources,
   equipmentResources,
+  manufacturerResources,
 ])

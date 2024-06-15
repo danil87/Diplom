@@ -2,6 +2,7 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
 import BadgeIcon from '@mui/icons-material/Badge'
 import ConstructionIcon from '@mui/icons-material/Construction'
 import EngineeringIcon from '@mui/icons-material/Engineering'
+import FactoryIcon from '@mui/icons-material/Factory'
 import ReportIcon from '@mui/icons-material/Report'
 import { DrawerList } from 'components/drawer-list'
 import { Header } from 'components/header'
@@ -20,6 +21,11 @@ const drawerListItem = [
     name: 'equipment',
     path: 'equipment',
     icon: <ConstructionIcon />,
+  },
+  {
+    name: 'manufacturer',
+    path: 'manufacturer',
+    icon: <FactoryIcon />,
   },
   {
     name: 'assignmentEquipment',
