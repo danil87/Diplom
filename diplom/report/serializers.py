@@ -8,8 +8,10 @@ class ReportListSerializer(serializers.ModelSerializer):
     )
     user = serializers.SlugRelatedField(
         read_only=True,
-        slug_field='full_name'
+        slug_field='username'
     )
+
+    report_date = serializers.DateTimeField(format='%Y-%m-%d %H:%M')
 
     class Meta: 
         model = Report

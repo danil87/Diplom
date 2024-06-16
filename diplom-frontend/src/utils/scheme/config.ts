@@ -11,10 +11,14 @@ export const roleScheme = string().required('validate.required')
 export const isSuperUserScheme = bool().required('validate.required')
 
 export const sharedString = string().required('validate.required')
-export const sharedNumber = number().required('validate.required')
+export const sharedNumber = number()
+  .required('validate.required')
+  .typeError('validate.required')
 export const sharedDate = date()
   .required('validate.required')
   .typeError('validate.date')
+
+export const textareaSchema = sharedString.max(1000, 'validate.maxLength')
 
 export const loginScheme = object({
   password: passwordScheme,
@@ -43,7 +47,21 @@ export const equipmentScheme = object({
   manufacturer: sharedNumber,
 })
 
+export const equipmentAssignmentSchema = object({
+  equipment: sharedNumber,
+  user: sharedNumber,
+  assignment_date: sharedDate,
+  return_date: sharedDate,
+})
+
 export const manufacturerSchema = object({
   name: sharedString,
   country: sharedString,
+})
+
+export const reportSchema = object({
+  equipment: sharedNumber,
+  user: sharedNumber,
+  report_text: textareaSchema,
+  report_date: sharedDate,
 })

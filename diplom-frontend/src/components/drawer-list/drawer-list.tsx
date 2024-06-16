@@ -34,7 +34,7 @@ export const DrawerList: FC<Props> = ({ drawerListItems }) => {
       <List>
         {drawerListItems.map(({ name, path, icon }) => (
           <ListItem key={path} disablePadding>
-            <ListItemButton onClick={() => redirect(name)}>
+            <ListItemButton onClick={() => redirect(path)}>
               <ListItemIcon>{icon}</ListItemIcon>
               <ListItemText primary={t(`drawerList.${name}`)} />
             </ListItemButton>

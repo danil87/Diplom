@@ -2,10 +2,12 @@ import './App.css'
 
 import { CircularProgress } from '@mui/material'
 import { StyledBox } from 'App.styled'
+import { EquipmentAssignmentTable } from 'components/equipment-assignment-table'
 import { EquipmentTable } from 'components/equipment-table'
 import { LoginForm } from 'components/login-from'
 import { ManufacturerTable } from 'components/manufacturer-table/manufacturer-table'
 import { RegisterForm } from 'components/register-from'
+import { ReportTable } from 'components/report-table'
 import { UserTable } from 'components/user-table'
 import { useUserData } from 'hooks/user'
 import { AuthPage } from 'pages/auth'
@@ -28,6 +30,11 @@ export const App = () => {
             <Route path='employees' element={<UserTable />} />
             <Route path='equipment' element={<EquipmentTable />} />
             <Route path='manufacturer' element={<ManufacturerTable />} />
+            <Route
+              path='equipment-assignment'
+              element={<EquipmentAssignmentTable />}
+            />
+            <Route path='report' element={<ReportTable />} />
           </Route>
         )}
         {!isAccessToken && (

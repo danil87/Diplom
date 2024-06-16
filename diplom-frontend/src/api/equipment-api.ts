@@ -7,7 +7,7 @@ import { getBaseQuery } from './config'
 export const equipmentApi = createApi({
   reducerPath: 'equipmentApi',
   baseQuery: getBaseQuery('http://localhost:8000/api/v1/equipments/'),
-  tagTypes: ['Equipment', 'resetEquipment'],
+  tagTypes: ['Equipment'],
   endpoints: builder => ({
     getEquipments: builder.query<QueryResponse<Equipment>, string>({
       query: params => ({

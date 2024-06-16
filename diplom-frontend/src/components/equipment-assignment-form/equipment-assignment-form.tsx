@@ -1,25 +1,29 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { LoadingButton } from '@mui/lab'
 import { TextField, Typography } from '@mui/material'
-import { manufacturerApi } from 'api'
+import { equipmentApi, userApi } from 'api'
 import { CustomSelect } from 'components/custom-select'
 import { DateInput } from 'components/date-input'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { RegEquipment } from 'type'
-import { equipmentScheme } from 'utils/scheme'
+import { RegEquipmentAssignment } from 'type'
+import { equipmentAssignmentSchema } from 'utils/scheme'
 
-import { Wrapper } from './equipment-form.styled'
+import { Wrapper } from './equipment-assignment-form.styled'
 import { inputsData } from './lib/input-data'
 
 type Props = {
-  createFn: (eq: RegEquipment) => void
-  updateFn: (eq: RegEquipment) => void
-  equipment?: RegEquipment
+  createFn: (eq: RegEquipmentAssignment) => void
+  updateFn: (eq: RegEquipmentAssignment) => void
+  equipmentAssignment?: RegEquipmentAssignment
 }
 
-export const EquipmentForm: FC<Props> = ({ createFn, updateFn, equipment }) => {
+export const EquipmentAssignmentForm: FC<Props> = ({
+  createFn,
+  updateFn,
+  equipmentAssignment,
+}) => {
   const { t } = useTranslation()
 
   const {
@@ -28,23 +32,23 @@ export const EquipmentForm: FC<Props> = ({ createFn, updateFn, equipment }) => {
     control,
     getValues,
     formState: { errors, isValid },
-  } = useForm<RegEquipment>({
+  } = useForm<RegEquipmentAssignment>({
     mode: 'all',
-    defaultValues: equipment || {},
-    resolver: yupResolver(equipmentScheme),
+    defaultValues: equipmentAssignment || {},
+    resolver: yupResolver(equipmentAssignmentSchema),
   })
 
-  const onSubmit = (data: RegEquipment) => {
-    if (equipment) {
+  const onSubmit = (data: RegEquipmentAssignment) => {
+    if (equipmentAssignment) {
       updateFn(data)
     } else {
       createFn(data)
     }
   }
 
-  const label = equipment
-    ? t('equipmentList.updateEquipment')
-    : t('equipmentList.addEquipment')
+  const label = equipmentAssignment
+    ? t('equipmentAssignmentList.updateEquipment')
+    : t('equipmentAssignmentList.addEquipmentAssignment')
 
   return (
     <>
@@ -56,7 +60,7 @@ export const EquipmentForm: FC<Props> = ({ createFn, updateFn, equipment }) => {
           const props = {
             error: !!errors[name]?.message,
             helperText: errors[name]?.message && t(`${errors[name]?.message}`),
-            label: t(`equipmentList.${name}`),
+            label: t(`equipmentAssignmentList.${name}`),
           }
 
           if (type === 'date') {
@@ -66,21 +70,35 @@ export const EquipmentForm: FC<Props> = ({ createFn, updateFn, equipment }) => {
                 key={name}
                 dataTestid={`date-input-equipment-${name}`}
                 control={control}
-                defaultValue={getValues(name) as string}
+                defaultValue={`${getValues(name)}`}
                 {...props}
               />
             )
           }
 
-          if (name === 'manufacturer') {
+          if (name === 'equipment') {
             return (
               <CustomSelect
                 {...register(name)}
                 key={name}
-                dataTestid='select-input-manufacturer'
+                dataTestid={`select-input-${name}`}
                 defaultValue={getValues(name) as number}
-                useGetQuery={manufacturerApi.useGetManufacturersQuery}
-                keyForShow='name'
+                useGetQuery={equipmentApi.useGetEquipmentsQuery}
+                keyForShow='serial_number'
+                {...props}
+              />
+            )
+          }
+
+          if (name === 'user') {
+            return (
+              <CustomSelect
+                {...register(name)}
+                key={name}
+                dataTestid={`select-input-${name}`}
+                defaultValue={getValues(name) as number}
+                useGetQuery={userApi.useGetUsersQuery}
+                keyForShow='username'
                 {...props}
               />
             )

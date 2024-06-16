@@ -20,6 +20,7 @@ class EquipmentAPIUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = EquipmentCreateOrUpdateSerializer
 
 class EquipmentAssignmentAPIList(generics.ListAPIView):
+    queryset = EquipmentAssignments.objects.all()
     serializer_class = EquipmentAssignmentsListSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = EquipmentAssignmentFilter
@@ -30,9 +31,4 @@ class EquipmentAssignmentAPICreate(generics.ListCreateAPIView):
 
 class EquipmentAssignmentAPIUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = EquipmentAssignments.objects.all()
-    
-    def get_serializer_class(self):
-        if self.request.method == 'GET':
-            return EquipmentAssignmentsListSerializer
-        
-        return EquipmentAssignmentsCreateOrUpdateSerializer
+    serializer_class = EquipmentAssignmentsCreateOrUpdateSerializer

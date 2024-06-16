@@ -37,8 +37,34 @@ export type RegEquipment = Omit<Equipment, 'id' | 'manufacturer'> & {
   manufacturer: number
 }
 
+export type EquipmentAssignment = {
+  id?: number
+  equipment: string
+  user: string
+  assignment_date: Date
+  return_date: Date
+}
+
+export type RegEquipmentAssignment = Pick<
+  EquipmentAssignment,
+  'assignment_date' | 'return_date' | 'id'
+> & { equipment: number; user: number }
+
 export type Manufacturer = {
   id?: number
   name: string
   country: string
+}
+
+export type Report = {
+  id?: number
+  report_date: Date
+  equipment: string
+  user: string
+  report_text: string
+}
+
+export type RegReport = Omit<Report, 'equipment' | 'user'> & {
+  equipment: number
+  user: number
 }

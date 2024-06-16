@@ -20,7 +20,7 @@ class EquipmentCreateOrUpdateSerializer(serializers.ModelSerializer):
 class EquipmentAssignmentsListSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(
         read_only=True,
-        slug_field='full_name'
+        slug_field='username'
     )
     equipment = serializers.SlugRelatedField(
         read_only=True,

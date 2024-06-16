@@ -29,7 +29,7 @@ const drawerListItem = [
   },
   {
     name: 'assignmentEquipment',
-    path: 'assignmentEquipment',
+    path: 'equipment-assignment',
     icon: <AssignmentIndIcon />,
   },
   {

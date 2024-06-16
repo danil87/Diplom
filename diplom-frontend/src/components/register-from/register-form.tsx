@@ -18,7 +18,7 @@ import { RegisterData } from './type'
 
 type Props = {
   // createUser: (user: RegisterData) => void
-  updateUser: (user: RegisterData) => void
+  updateUser?: (user: RegisterData) => void
   userData?: RegisterData
 }
 

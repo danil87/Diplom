@@ -1,50 +1,61 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { LoadingButton } from '@mui/lab'
 import { TextField, Typography } from '@mui/material'
-import { manufacturerApi } from 'api'
+import { equipmentApi, userApi } from 'api'
 import { CustomSelect } from 'components/custom-select'
-import { DateInput } from 'components/date-input'
-import { FC } from 'react'
+import dayjs from 'dayjs'
+import { FC, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { RegEquipment } from 'type'
-import { equipmentScheme } from 'utils/scheme'
+import { RegReport } from 'type'
+import { reportSchema } from 'utils/scheme'
 
-import { Wrapper } from './equipment-form.styled'
 import { inputsData } from './lib/input-data'
+import { Wrapper } from './report-form.styled'
 
 type Props = {
-  createFn: (eq: RegEquipment) => void
-  updateFn: (eq: RegEquipment) => void
-  equipment?: RegEquipment
+  createFn: (eq: RegReport) => void
+  updateFn: (eq: RegReport) => void
+  report?: RegReport
 }
 
-export const EquipmentForm: FC<Props> = ({ createFn, updateFn, equipment }) => {
+export const ReportForm: FC<Props> = ({ createFn, updateFn, report }) => {
   const { t } = useTranslation()
+  const { data: user } = userApi.useGetUserQuery()
 
   const {
     register,
     handleSubmit,
-    control,
     getValues,
+    setValue,
     formState: { errors, isValid },
-  } = useForm<RegEquipment>({
+  } = useForm<RegReport>({
     mode: 'all',
-    defaultValues: equipment || {},
-    resolver: yupResolver(equipmentScheme),
+    defaultValues: report || {
+      user: user?.id,
+      report_date: dayjs().toDate(),
+    },
+    resolver: yupResolver(reportSchema),
   })
 
-  const onSubmit = (data: RegEquipment) => {
-    if (equipment) {
+  const onSubmit = (data: RegReport) => {
+    if (report) {
       updateFn(data)
     } else {
       createFn(data)
     }
   }
 
-  const label = equipment
-    ? t('equipmentList.updateEquipment')
-    : t('equipmentList.addEquipment')
+  const label = report
+    ? t('reportList.updateReport')
+    : t('reportList.addReport')
+
+  useEffect(() => {
+    if (user) {
+      setValue('user', user.id)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user])
 
   return (
     <>
@@ -56,31 +67,31 @@ export const EquipmentForm: FC<Props> = ({ createFn, updateFn, equipment }) => {
           const props = {
             error: !!errors[name]?.message,
             helperText: errors[name]?.message && t(`${errors[name]?.message}`),
-            label: t(`equipmentList.${name}`),
+            label: t(`reportList.${name}`),
           }
 
-          if (type === 'date') {
+          if (type === 'textarea') {
             return (
-              <DateInput
+              <TextField
                 {...register(name)}
-                key={name}
-                dataTestid={`date-input-equipment-${name}`}
-                control={control}
-                defaultValue={getValues(name) as string}
                 {...props}
+                data-testid='text-area-report'
+                key={name}
+                multiline
+                maxRows={10}
               />
             )
           }
 
-          if (name === 'manufacturer') {
+          if (name === 'equipment') {
             return (
               <CustomSelect
                 {...register(name)}
                 key={name}
-                dataTestid='select-input-manufacturer'
+                dataTestid='select-input-equipment'
                 defaultValue={getValues(name) as number}
-                useGetQuery={manufacturerApi.useGetManufacturersQuery}
-                keyForShow='name'
+                useGetQuery={equipmentApi.useGetEquipmentsQuery}
+                keyForShow='serial_number'
                 {...props}
               />
             )
