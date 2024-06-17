@@ -65,3 +65,12 @@ export const reportSchema = object({
   report_text: textareaSchema,
   report_date: sharedDate,
 })
+
+export const maintenanceSchema = object({
+  equipment: sharedNumber,
+  maintenance_date: sharedDate,
+  maintenance_type: sharedString,
+  cost: sharedNumber,
+  technician: sharedNumber,
+  notes: textareaSchema,
+})

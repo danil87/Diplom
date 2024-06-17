@@ -1,9 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { LoadingButton } from '@mui/lab'
 import { TextField, Typography } from '@mui/material'
-import { equipmentApi, userApi } from 'api'
+import { equipmentApi } from 'api'
 import { CustomSelect } from 'components/custom-select'
 import dayjs from 'dayjs'
+import { useUserData } from 'hooks'
 import { FC, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -21,7 +22,7 @@ type Props = {
 
 export const ReportForm: FC<Props> = ({ createFn, updateFn, report }) => {
   const { t } = useTranslation()
-  const { data: user } = userApi.useGetUserQuery()
+  const { data: user } = useUserData()
 
   const {
     register,

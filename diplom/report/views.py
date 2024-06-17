@@ -20,10 +20,4 @@ class ReportAPICreate(generics.ListCreateAPIView):
 
 class ReportAPIUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Report.objects.all()
-    
-    
-    def get_serializer_class(self):
-        if self.request.method == 'GET':
-            return ReportListSerializer
-        
-        return ReportCreateOrUpdateSerializer
+    serializer_class = ReportCreateOrUpdateSerializer

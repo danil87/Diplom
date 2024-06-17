@@ -2,9 +2,11 @@ import './App.css'
 
 import { CircularProgress } from '@mui/material'
 import { StyledBox } from 'App.styled'
+import { Cabinet } from 'components/cabinet'
 import { EquipmentAssignmentTable } from 'components/equipment-assignment-table'
 import { EquipmentTable } from 'components/equipment-table'
 import { LoginForm } from 'components/login-from'
+import { MaintenanceTable } from 'components/maintenance-table'
 import { ManufacturerTable } from 'components/manufacturer-table/manufacturer-table'
 import { RegisterForm } from 'components/register-from'
 import { ReportTable } from 'components/report-table'
@@ -35,6 +37,8 @@ export const App = () => {
               element={<EquipmentAssignmentTable />}
             />
             <Route path='report' element={<ReportTable />} />
+            <Route path='maintenance' element={<MaintenanceTable />} />
+            <Route path='cabinet' element={<Cabinet />} />
           </Route>
         )}
         {!isAccessToken && (

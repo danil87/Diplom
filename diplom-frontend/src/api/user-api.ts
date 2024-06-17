@@ -19,7 +19,7 @@ export const userApi = createApi({
     getOneUser: builder.mutation<RegisterData, number>({
       query: id => `${id}`,
     }),
-    updateUser: builder.mutation<void, RegisterData>({
+    updateUser: builder.mutation<void, RegisterData | User>({
       query: body => ({
         url: `${body.id}`,
         method: 'PUT',

@@ -22,9 +22,8 @@ type Props<T> = {
   page: number
   setPage: (page: number) => void
   maxPage: number
-  deleteObj: (id: number) => void
-  isDelete?: boolean
-  setId: (id: number) => void
+  deleteObj?: (id: number) => void
+  setId?: (id: number) => void
 }
 
 export const CustomTable = <T extends { id?: number } & object>({
@@ -35,7 +34,6 @@ export const CustomTable = <T extends { id?: number } & object>({
   setPage,
   maxPage,
   deleteObj,
-  isDelete = true,
   setId,
 }: Props<T>) => {
   const { t } = useTranslation()
@@ -61,7 +59,7 @@ export const CustomTable = <T extends { id?: number } & object>({
             {data.map(el => (
               <StyledTableRow
                 key={el.id}
-                onClick={() => setId(el.id!)}
+                onClick={() => setId?.(el.id!)}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 {dataKeys.map(
@@ -72,7 +70,7 @@ export const CustomTable = <T extends { id?: number } & object>({
                       </TableCell>
                     )
                 )}
-                {isDelete && (
+                {deleteObj && (
                   <TableCell>
                     <IconButton
                       onClick={() => deleteObj(el.id!)}

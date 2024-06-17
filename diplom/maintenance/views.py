@@ -23,9 +23,4 @@ class MaintenanceAPICreate(generics.ListCreateAPIView):
 class MaintenanceAPIUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = Maintenance.objects.all()
     permission_classes = [IsOwnerOrReadOnly]
-
-    def get_serializer_class(self):
-        if self.request.method == 'GET':
-            return MaintenanceListSerializer
-        
-        return MaintenanceCreateOrUpdateSerializer
+    serializer_class = MaintenanceCreateOrUpdateSerializer

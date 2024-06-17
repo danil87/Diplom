@@ -9,7 +9,7 @@ class MaintenanceListSerializer(serializers.ModelSerializer):
     )
     technician = serializers.SlugRelatedField(
         read_only=True,
-        slug_field='full_name'
+        slug_field='username'
     ) 
 
     class Meta:

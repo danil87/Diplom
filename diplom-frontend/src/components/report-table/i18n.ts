@@ -2,7 +2,7 @@ export const reportResources = {
   ru: {
     translation: {
       reportList: {
-        equipment: 'Оборадование',
+        equipment: 'Оборудование',
         user: 'Работник',
         report_date: 'Дата обращения',
         report_text: 'Текст обращения',

@@ -88,8 +88,8 @@ export const EquipmentAssignmentTable: FC = () => {
           page={page}
           setPage={setPage}
           maxPage={maxPage}
-          deleteObj={deleteEq}
-          setId={getEq}
+          deleteObj={user?.is_superuser ? deleteEq : undefined}
+          setId={user?.is_superuser ? getEq : undefined}
         />
       )}
       <ModalWindow

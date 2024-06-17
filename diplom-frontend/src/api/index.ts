@@ -1,6 +1,7 @@
 export { authApi } from './auth-api'
 export { equipmentApi } from './equipment-api'
 export { equipmentAssignmentApi } from './equipment-assignment'
+export { maintenanceApi } from './maintenance-api'
 export { manufacturerApi } from './manufacturer-api'
 export { reportApi } from './report-api'
 export { userApi } from './user-api'

@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { authApi, manufacturerApi, reportApi } from 'api'
+import { authApi, maintenanceApi, manufacturerApi, reportApi } from 'api'
 import { equipmentApi } from 'api/equipment-api'
 import { equipmentAssignmentApi } from 'api/equipment-assignment'
 import { userApi } from 'api/user-api'
@@ -16,7 +16,8 @@ export const createStore = () =>
         .concat(equipmentApi.middleware)
         .concat(manufacturerApi.middleware)
         .concat(equipmentAssignmentApi.middleware)
-        .concat(reportApi.middleware),
+        .concat(reportApi.middleware)
+        .concat(maintenanceApi.middleware),
   })
 
 export type RootState = ReturnType<typeof rootReducer>

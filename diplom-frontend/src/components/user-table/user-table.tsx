@@ -95,8 +95,8 @@ export const UserTable: FC = () => {
           page={page}
           setPage={setPage}
           maxPage={maxPage}
-          deleteObj={deleteUser}
-          setId={getUser}
+          deleteObj={user?.is_superuser ? deleteUser : undefined}
+          setId={user?.is_superuser ? getUser : undefined}
         />
       )}
       <ModalWindow

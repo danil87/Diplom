@@ -68,3 +68,18 @@ export type RegReport = Omit<Report, 'equipment' | 'user'> & {
   equipment: number
   user: number
 }
+
+export type Maintenance = {
+  id?: number
+  equipment: string
+  maintenance_date: Date
+  maintenance_type: string
+  cost: number
+  technician: string
+  notes: string
+}
+
+export type RegMaintenance = Omit<Maintenance, 'equipment' | 'technician'> & {
+  equipment: number
+  technician: number
+}

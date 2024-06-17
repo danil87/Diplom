@@ -1,30 +1,34 @@
 import { CircularProgress } from '@mui/material'
-import { manufacturerApi } from 'api'
+import { maintenanceApi } from 'api'
 import { Filters } from 'components/filter'
-import { ManufacturerForm } from 'components/manufacturer-form'
+import { MaintenanceForm } from 'components/maintenance-form'
 import { ModalWindow } from 'components/modal'
 import { CustomTable } from 'components/table'
 import { useQuery, useUpdateOrCreate, useUserData } from 'hooks'
 import { FC, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Manufacturer } from 'type'
+import { Maintenance, RegMaintenance } from 'type'
 
-import { StyledButton, Wrapper } from './manufacturer-table.styled'
+import { StyledButton, Wrapper } from './maintenance-table.styled'
 
 const LIMIT = 5
 
 const filterData = [
   {
-    label: 'manufacturerList.name',
-    key: 'name',
+    label: 'maintenanceList.equipment',
+    key: 'equipment',
   },
   {
-    label: 'manufacturerList.country',
-    key: 'country',
+    label: 'maintenanceList.technician',
+    key: 'technician',
+  },
+  {
+    label: 'maintenanceList.maintenance_date',
+    key: 'maintenance_date',
   },
 ]
 
-export const ManufacturerTable: FC = () => {
+export const MaintenanceTable: FC = () => {
   const { t } = useTranslation()
   const { data: user } = useUserData()
   const {
@@ -33,30 +37,29 @@ export const ManufacturerTable: FC = () => {
     isOpenModal,
     setIsOpenModal,
     maxPage,
-    data: manufacturers,
+    data: maintenances,
     isVisibilityKey,
     isFetching,
-  } = useQuery<Manufacturer>(LIMIT, manufacturerApi.useGetManufacturersQuery)
+  } = useQuery<Maintenance>(LIMIT, maintenanceApi.useGetMaintenancesQuery)
+  const [deleteEq] = maintenanceApi.useDeleteMaintenanceMutation()
 
-  const [deleteMn] = manufacturerApi.useDeleteManufacturerMutation()
-
-  const props = useUpdateOrCreate<Manufacturer>(
-    manufacturerApi.useCreateManufacturerMutation,
-    manufacturerApi.useUpdateManufacturerMutation
+  const props = useUpdateOrCreate<RegMaintenance>(
+    maintenanceApi.useCreateMaintenanceMutation,
+    maintenanceApi.useChangeMaintenanceMutation
   )
 
-  const [getManufacturer, { data: manufacturer, reset }] =
-    manufacturerApi.useGetOneManufacturerMutation()
+  const [getEq, { data: maintenance, reset }] =
+    maintenanceApi.useGetOneMaintenanceMutation()
 
   useEffect(() => {
-    if (manufacturer) {
+    if (maintenance) {
       setIsOpenModal(true)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [manufacturer])
+  }, [maintenance])
 
   useEffect(() => {
-    if (!isOpenModal && manufacturer) {
+    if (!isOpenModal && maintenance) {
       reset()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -66,21 +69,21 @@ export const ManufacturerTable: FC = () => {
     <Wrapper>
       {user?.is_superuser && (
         <StyledButton onClick={() => setIsOpenModal(true)} variant='contained'>
-          {t('manufacturerList.addManufacturer')}
+          {t('maintenanceList.addMaintenance')}
         </StyledButton>
       )}
       <Filters filterData={filterData} />
       {isFetching && <CircularProgress />}
-      {!isFetching && !!manufacturers?.length && (
+      {!isFetching && !!maintenances?.length && (
         <CustomTable
-          data={manufacturers}
+          data={maintenances}
           isVisibilityKey={isVisibilityKey}
-          translateBase='manufacturerList'
+          translateBase='maintenanceList'
           page={page}
           setPage={setPage}
           maxPage={maxPage}
-          deleteObj={user?.is_superuser ? deleteMn : undefined}
-          setId={user?.is_superuser ? getManufacturer : undefined}
+          deleteObj={deleteEq}
+          setId={getEq}
         />
       )}
       <ModalWindow
@@ -88,7 +91,7 @@ export const ManufacturerTable: FC = () => {
         onClose={() => setIsOpenModal(false)}
         {...props}
       >
-        <ManufacturerForm {...props} manufacturer={manufacturer} />
+        <MaintenanceForm {...props} maintenance={maintenance} />
       </ModalWindow>
     </Wrapper>
   )

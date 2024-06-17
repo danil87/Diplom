@@ -6,6 +6,7 @@ import { SelectLanguage } from 'components/select-language'
 import { useUserData } from 'hooks/user'
 import { FC, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 
 import { StyledBox } from './header.styled'
 
@@ -14,6 +15,7 @@ const style = { color: '#fff' }
 export const Header: FC = () => {
   const { t } = useTranslation()
   const { data: user, isSuccess } = useUserData()
+  const navigate = useNavigate()
   const [signOut, { isSuccess: isSuccessSignOut }] =
     authApi.useSignOutMutation()
 
@@ -33,7 +35,12 @@ export const Header: FC = () => {
         <StyledBox>
           {isSuccess && (
             <>
-              <Button data-testid='username-button' variant='text' sx={style}>
+              <Button
+                data-testid='username-button'
+                variant='text'
+                sx={style}
+                onClick={() => navigate('cabinet')}
+              >
                 {user.username}
               </Button>
               <Button
